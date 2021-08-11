@@ -21,12 +21,15 @@ class Webcam_impl():
  
  
 if __name__ == '__main__': 
+    
     #initialize camera object, rosnode and camera
     webcam=Webcam_impl() 
-    pub = rospy.Publisher('image_raw', Image, queue_size=1) 
+    pub = rospy.Publisher('image_raw', Image, queue_size=1)
+
     rospy.init_node('webcam', anonymous=False)
     bridge=CvBridge()
     print("webcam node started")
+    
     while not rospy.is_shutdown(): 
         #continuously capturing and publishing image messages
         frame=webcam.CaptureFrame()

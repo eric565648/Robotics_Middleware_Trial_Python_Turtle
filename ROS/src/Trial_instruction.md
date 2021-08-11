@@ -28,7 +28,7 @@ For each ROS project there's a dedicated catkin workspace, and in this trial the
 ## Package
 Unlike RobotRaconteur, ROS requires the workspace to build the content. All packages should be in `workspace/src/` folder. In this repository there's already a webcam package (`~/Robotics_Middleware_Trial_Python_Turtle/ROS/src/webcam/`), so you'll need to [create another package](http://wiki.ros.org/ROS/Tutorials/CreatingPackage) for python turtle:
 ```
-cd ~/Robotics_Middleware_Trial_Python_Turtle/ROS
+cd ~/Robotics_Middleware_Trial_Python_Turtle/ROS #Eric: should be ROS/src
 catkin_create_pkg python_turtle std_msgs geometry_msgs rospy
 ```
 This creates a new package `python_turtle` under `~/Robotics_Middleware_Trial_Python_Turtle/ROS/src`, with dependencies of `std_msgs`, `geometry_msgs` and `rospy`.
@@ -43,12 +43,14 @@ geometry_msgs/Pose turtle_pose
 string color
 ```
 This bascially shows the message contains the name of the turtle, its pose and color. Since this message is part of the `python_turtle` package, create a folder under `~/Robotics_Middleware_Trial_Python_Turtle/ROS/src/python_turtle/` called `msg`. Then create a file named `turtle_msg.msg`, and copy above message definition into this file as your own message type.
+#Eric: should have the cmd here for newbies
 
 In order to let the compiler know and build the message for you, it's necessary to modify the `package.xml` as well as `CMakeLists.txt` under package `python_turtle`. So first open up `package.xml` and uncomment below two lines:
 ```
 <build_depend>message_generation</build_depend>
 <exec_depend>message_runtime</exec_depend>
 ```
+#Eric: should have instruction here about ucomment
 Then open up `CMakeLists.txt`, search for lines below:
 ```
 find_package(catkin REQUIRED COMPONENTS
@@ -164,7 +166,7 @@ Remember to build your workspace and source it to get your service types exposed
 Type in following commands to build your workspace:
 ```
 cd ~/Robotics_Middleware_Trial_Python_Turtle/ROS
-catkin_make
+catkin_make #Eric: should have a source /opt/ros/melodic/setup.bash here
 ```
 It should finish without errors, and generating `/build` and `/devel` folders under the same directory. However, to make sure your code knows what you've built, we need to source it:
 ```
@@ -176,6 +178,8 @@ This step adds the command everytime you open up a new terminal. If errors like 
 Build should be successful without any errors. Please direct to `Robotics_Middleware_Trial_Python_Turtle/readme.md` for question post.
 
 # ROS Publisher
+#Eric: I think should have a concept explaination here
+#Eric: The codes are squeezing together. It's a bit annoying.
 Under `~/Robotics_Middleware_Trial_Python_Turtle/ROS/src/webcam/src/` there is a python script called `cam_pub.py`. At the very top, we include ROS library and message types:
 ``` 
 import rospy
@@ -185,7 +189,7 @@ from cv_bridge import CvBridge, CvBridgeError
 The `Webcam_impl()` class is a webcam class, which contains camera metadata and a `CaptureFrame()` function. Then take a look at `main`:
 ```
 pub = rospy.Publisher('image_raw', Image, queue_size=0) 
-rospy.init_node('webcam', anonymous=True) 
+rospy.init_node('webcam', anonymous=True) #Eric: Is it anonymous=True or False?
 ```
 Here ROS node is initialized with a publisher, published to topic `image_raw` of type `Image` ([sensor_msgs/Image.msg](http://docs.ros.org/melodic/api/sensor_msgs/html/msg/Image.html))
 ```
@@ -200,6 +204,9 @@ The image is captured and convert to ROS Image type, and finally published to th
 To run this script, open a new terminal and run `$ roscore`. After that, you can run this script by `python cam_pub.py`.
 For every ROS communication, there needs to be one and only one roscore running. To check if the images are successfully published or not, open up a new terminal and type in `$ rostopic echo image_raw`.
 This way the terminal shall display the raw image data.
+#Eric: should change the permission of the file to executable
+#Eric: should tell them that if use rostopic echo for images, there will be a lot of number jumping in the terminal.
+#Eric: should tell them how to terminate a rosrun or rostopic echo
 
 * **Checkpoint 2**: 
 After the publisher runs, in the separate window, `$ rostopic echo image_raw` will display the raw image data. Please direct to `Robotics_Middleware_Trial_Python_Turtle/readme.md` for question post.
