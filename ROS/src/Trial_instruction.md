@@ -216,7 +216,7 @@ After the publisher runs, in the separate window, `$ rostopic echo image_raw` wi
 On your computer side, under `~/Robotics_Middleware_Trial_Python_Turtle/ROS/src/webcam/src/` there is a python script called `cam_sub.py`. We include ROS library and message types at the top.
 Unlike a publisher, a subscriber subscribe to the topic, and trigger the `callback()` function. Inside main, 
 ```
-rospy.init_node('stream_node', anonymous=True)
+rospy.init_node('stream_node', anonymous=True) #Eric: so is it True or False?
 sub = rospy.Subscriber("image_raw",Image,callback)
 rospy.spin()
 ```
@@ -232,7 +232,8 @@ Above lines basically convert the `Image` type data into an OpenCV image object,
 
 * **Checkpoint 3**: 
 There should be a popup window displaying the realtime image from webcam. Please direct to `Robotics_Middleware_Trial_Python_Turtle/readme.md` for question post.
-
+#Eric: The script is missing with the line #!/usr/bin/env python
+#Eric: And also the executable permission setup.
 
 ## Create Turtlebot Server
 All script about turtles should be in `~/Robotics_Middleware_Trial_Python_Turtle/ROS/src/python_turtle/src/` directory, so let's create a file named `turtlebot_service.py`. The function of this script is to keep track of the turtle (pose and color).
@@ -293,6 +294,11 @@ Make sure have one and only one `roscore` running.
 
 Run the script with `$ python turtlebot_service.py`, it should be running with no error messages. Please direct to `Robotics_Middleware_Trial_Python_Turtle/readme.md` for question post.
 
+Eric: There are a lot of confusions here
+Eric: 1. The drive callback is insufficient. You can't just conver the twist message to pose like that. There should be a inverse kinematic and control loop with a designated control frequency here.
+Eric: 2. There shall be more hint to the messagetype etc.
+Eric: 3. Change the permission of the script to executable.
+
 ## Create Turtlebot Client
 Now let's create a simple ROS client for the turtlebot. Create a new file and name it `turtlebot_client.py`. First import the ROS and other essential libraries at top:
 ```
@@ -329,12 +335,15 @@ def update()
 	t1.setpos(<x coordinate>,<y coordinate>)
 	t1.seth(<angle>)
 ```
+Eric: A : is mission here.
+Eric: Should convert quaternion to rpy
 Finally, we initialize ROS node as well as the publisher and subscriber:
 ```
 rospy.init_node('<random node name>', anonymous=False)
 pub=rospy.Publisher('<drive topic name>',<message type>,queue_size=1)
 sub=rospy.Subscriber('<turtle topic name>',<message type>,callback)
 ```
+Eric: It's better to remind the user that the topic name should match with the one in the previous script.
 After ROS is initialized, let's also have the turtle running a circle:
 ```
 while not rospy.is_shutdown():
@@ -349,6 +358,8 @@ while not rospy.is_shutdown():
 Run the script with `$ python turtlebot_client.py`, it bring up a window and drive the turtle in a circle. Please direct to `Robotics_Middleware_Trial_Python_Turtle/readme.md` for question post.
 
 All rospy scripts can run with `python` command, but make sure have one and only one `roscore` running.
+
+Eric: Change the permission of the script to executable.
 
 # Task
 ## 1
@@ -366,3 +377,6 @@ Given and detection example `Examples/detection.py`, create the final client nod
 
 * **Checkpoint 7**:
 By pointing the webcam at different colors (R/G/B), the turtle on screen should drive based on the color seen. Please direct to `Robotics_Middleware_Trial_Python_Turtle/readme.md` for question post.
+
+# General Recommendation
+Eric: Why use `python script.py` but not `rosrun package script`?
