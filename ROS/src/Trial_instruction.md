@@ -368,12 +368,17 @@ From tutorial above, you should have a complete turtlebot subscriber and a simpl
 * **Checkpoint 6**:
 Run the script with `$ python client_keyboard.py`, it bring up a window. In the terminal, arrow key press will drive the turtle on screen accordinly. Please direct to `Robotics_Middleware_Trial_Python_Turtle/readme.md` for question post.
 
+Eric: Can give a hint yo use the server script as well.
+
 ## 2
 ![](ROS.JPG)
 
 The final goal is to create a server-client model above, with the turtle server node keeps track of the state of the turtle, the webcam captures image continuously and publish them, the client node subscribe and display the turtle with python turtle module and command the turtle through publisher based on image content. The webcam publisher is provided and the turtle server node is created through tutorial.
 
 Given and detection example `Examples/detection.py`, create the final client node subscribing images from the webcam, process the image and publishing command to drive the turtle based on the color detected in your webcam.
+
+Eric: It's 'Examples/detection_red.py'.
+Eric: Strongly suggest to use hsv instead of rgb (like in Duckietown)
 
 * **Checkpoint 7**:
 By pointing the webcam at different colors (R/G/B), the turtle on screen should drive based on the color seen. Please direct to `Robotics_Middleware_Trial_Python_Turtle/readme.md` for question post.
