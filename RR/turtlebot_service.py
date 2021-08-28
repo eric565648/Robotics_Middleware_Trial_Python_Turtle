@@ -1,6 +1,6 @@
-import threading
 import numpy as np
 import RobotRaconteur as RR
+import time
 RRN=RR.RobotRaconteurNode.s
 
 import math
@@ -50,39 +50,29 @@ class CreateTurtle:
         self.ang_z = 0
         self.dirty = False
 
-        # set rospy timer for drive update
         self.interval = 0.04
-        t = threading.Timer(self.interval, self.drive_update)
-        t.start()
 
-    def drive_callback(self, move_speed,turn_speed):            
+    def drive(self, move_speed,turn_speed):            
         #Drive function, update new position, this is the one referred in definition
         
+        print("get:",move_speed)
+        print("-----")
+
         self.lin_x = move_speed
         self.ang_z = turn_speed
         self.dirty = True
         
-        # so strange here!!!!!!!!!!!!!!!!!
-        # self.turtle.turtle_pose.position.x = data.position.x
-        # self.turtle.turtle_pose.position.y = data.position.y
-        # self.turtle.turtle_pose.orientation.z = <decode message type and update pose>
+        # qx = self.turtle.turtle_pose.orientation.x
+        # qy = self.turtle.turtle_pose.orientation.y
+        # qz = self.turtle.turtle_pose.orientation.z
+        # qw = self.turtle.turtle_pose.orientation.w
+        # x = self.turtle.turtle_pose.position.x
+        # y = self.turtle.turtle_pose.position.y
 
-    def drive_update(self):
-
-        if not self.dirty:
-            return
-
-        qx = self.turtle.turtle_pose.orientation.x
-        qy = self.turtle.turtle_pose.orientation.y
-        qz = self.turtle.turtle_pose.orientation.z
-        qw = self.turtle.turtle_pose.orientation.w
-        x = self.turtle.turtle_pose.position.x
-        y = self.turtle.turtle_pose.position.y
-
-        roll, pitch, yaw = rpy_from_quat(qx, qy, qz, qw)
+        # roll, pitch, yaw = rpy_from_quat(qx, qy, qz, qw)
 
         # update orientation
-        yaw = yaw + self.ang_z * self.interval
+        yaw = self.turtle_pose.angle + self.ang_z * self.interval
         
         # keep yaw between -pi and pi
         # Think: Why we use while loop but not if-else here?
@@ -93,28 +83,35 @@ class CreateTurtle:
 
         print('yaw:',yaw)
 
-        # to quaternion
-        qx, qy, qz, qw = quat_from_rpy(roll, pitch, yaw)
+        # # to quaternion
+        # qx, qy, qz, qw = quat_from_rpy(roll, pitch, yaw)
 
         # update position
-        x = x + math.cos(yaw) * self.lin_x * self.interval
-        y = y + math.sin(yaw) * self.lin_x * self.interval
+        x = self.turtle_pose.x + math.cos(yaw) * self.lin_x * self.interval
+        y = self.turtle_pose.y + math.sin(yaw) * self.lin_x * self.interval
 
         # clear cmd
         self.lin_x = 0
         self.ang_z = 0
 
         # update msg
-        self.turtle.turtle_pose.orientation.x = qx
-        self.turtle.turtle_pose.orientation.y = qy
-        self.turtle.turtle_pose.orientation.z = qz
-        self.turtle.turtle_pose.orientation.w = qw
-        self.turtle.turtle_pose.position.x = x
-        self.turtle.turtle_pose.position.y = y
+        # self.turtle.turtle_pose.orientation.x = qx
+        # self.turtle.turtle_pose.orientation.y = qy
+        # self.turtle.turtle_pose.orientation.z = qz
+        # self.turtle.turtle_pose.orientation.w = qw
+        # self.turtle.turtle_pose.position.x = x
+        # self.turtle.turtle_pose.position.y = y
+        self.turtle_pose.angle = yaw
+        self.turtle_pose.x = x
+        self.turtle_pose.y = y
 
+        print("outvalue")
         self.turtle_pose_wire.OutValue = self.turtle_pose
 
-        self.dirty = False
+        # so strange here!!!!!!!!!!!!!!!!!
+        # self.turtle.turtle_pose.position.x = data.position.x
+        # self.turtle.turtle_pose.position.y = data.position.y
+        # self.turtle.turtle_pose.orientation.z = <decode message type and update pose>
 
     def set_pose(self,turtle_pose):		
         #update pose based on given pose
@@ -122,7 +119,7 @@ class CreateTurtle:
         self.turtle_pose_wire.OutValue=self.turtle_pose
         return 1
 
-with RR.ServerNodeSetup("Turtlebot_Service", 2356):      #setup RR node with service name and port
+with RR.ServerNodeSetup("Turtlebot_Service", 2355):      #setup RR node with service name and port
     #Register the service type
     RRN.RegisterServiceTypeFromFile("robdef/experimental.turtlebot_create.robdef")               
     #create object

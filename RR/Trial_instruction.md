@@ -192,6 +192,7 @@ Now let's create a simple RR client for the turtlebot. Create a new file and nam
 from RobotRaconteur.Client import *     #import RR client library
 import turtle
 ```
+Eric: import sys
 Similar to the `turtlebot.py`, we need to initialize the screen and a turtle first:
 ```
 #display setup

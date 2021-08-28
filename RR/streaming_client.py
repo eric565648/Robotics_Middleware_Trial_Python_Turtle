@@ -28,7 +28,8 @@ while True:
         cv2.imshow("Image",WebcamImageToMat(cam_obj.image))
     
     if cv2.waitKey(50)!=-1:
-        break
+        # break
+        pass
 cv2.destroyAllWindows()
 
 
