@@ -50,6 +50,7 @@ RUN apt-get -o Acquire::ForceIPv4=true update && apt-get -yq dist-upgrade \
     python3-opencv \
     python3-numpy \
     python3-empy  \
+    python3-tk \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
