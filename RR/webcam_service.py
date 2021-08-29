@@ -49,7 +49,7 @@ class Webcam_impl(object):
 
 def main():
 
-    with RR.ServerNodeSetup("Webcam_Service",2355,argv=sys.argv) as node_setup:
+    with RR.ServerNodeSetup("Webcam_Service",2356,argv=sys.argv) as node_setup:
 
         #Initialize the webcam host root object
         

@@ -10,7 +10,7 @@ def WebcamImageToMat(image):
 
 #Main program
 
-url='rr+tcp://localhost:2355/?service=Webcam'
+url='rr+tcp://localhost:2356/?service=Webcam'
 #take url from command line
 if (len(sys.argv)>=2):
     url=sys.argv[1]

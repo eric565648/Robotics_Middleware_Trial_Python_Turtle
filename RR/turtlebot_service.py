@@ -54,9 +54,6 @@ class CreateTurtle:
 
     def drive(self, move_speed,turn_speed):            
         #Drive function, update new position, this is the one referred in definition
-        
-        print("get:",move_speed)
-        print("-----")
 
         self.lin_x = move_speed
         self.ang_z = turn_speed
@@ -81,8 +78,6 @@ class CreateTurtle:
         while yaw >= math.pi:
             yaw -= 2*math.pi
 
-        print('yaw:',yaw)
-
         # # to quaternion
         # qx, qy, qz, qw = quat_from_rpy(roll, pitch, yaw)
 
@@ -105,7 +100,6 @@ class CreateTurtle:
         self.turtle_pose.x = x
         self.turtle_pose.y = y
 
-        print("outvalue")
         self.turtle_pose_wire.OutValue = self.turtle_pose
 
         # so strange here!!!!!!!!!!!!!!!!!
